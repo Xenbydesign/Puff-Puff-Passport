@@ -65,5 +65,3 @@ instance
 .vscode
 package-lock.json
 .env
-
-delete_later_notes.md

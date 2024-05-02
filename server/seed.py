@@ -1,18 +1,19 @@
 #!/usr/bin/env python3
 
 # Standard library imports
-from random import randint, choice as rc
-
-# Remote library imports
-from faker import Faker
+from random import choice as rc
+from random import randint
 
 # Local imports
 from config import app, db
-from models.user import User
+
+# Remote library imports
+from faker import Faker
 from models.bud_tracker import BudTracker
-from models.smoke_session import SmokeSession
 from models.canna_gear import CannaGear
+from models.smoke_session import SmokeSession
 from models.strain import Strain
+from models.user import User
 
 fake = Faker()
 

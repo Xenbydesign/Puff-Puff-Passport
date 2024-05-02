@@ -1,13 +1,13 @@
-from config import app, db, api, jwt
+from config import api, app, db, jwt
 from models.user import User
+from routes.budtracker_by_id import BudTrackerById
+from routes.budtrackers import BudTrackers
+from routes.canna_gear_by_id import CannaGearById
+from routes.canna_gears import CannaGears
+from routes.strains import Strains
 
 # routes
 from routes.user_by_id import UserById
-from routes.budtrackers import BudTrackers
-from routes.budtracker_by_id import BudTrackerById
-from routes.strains import Strains
-from routes.canna_gears import CannaGears
-from routes.canna_gear_by_id import CannaGearById
 from routes.yelp import YelpData
 
 api.add_resource(YelpData, "/yelp")
@@ -18,11 +18,12 @@ api.add_resource(BudTrackerById, "/bud-trackers/<int:id>")
 api.add_resource(UserById, "/users/<int:id>")
 api.add_resource(Strains, "/strains")
 
+from routes.auth.check_session import CheckSession
+
 # auth
 from routes.auth.login import Login
-from routes.auth.signup import SignUp
-from routes.auth.check_session import CheckSession
 from routes.auth.logout import Logout
+from routes.auth.signup import SignUp
 
 api.add_resource(SignUp, "/signup")
 api.add_resource(CheckSession, "/check-session")
