@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { Link, useOutletContext, useNavigate } from "react-router-dom";
-
+import ClipLoader from "react-spinners/ClipLoader"
 
 
 function StrainCard({ strain }) {
@@ -16,7 +16,13 @@ function StrainCard({ strain }) {
     const handleTrackStrain = () => {
         navigate(`/budtracker/new/${strain.id}`)
     }
-
+    if (!strain) {
+        return <ClipLoader
+            size={150}
+            aria-label="Loading Spinner"
+            data-testid="loader"
+        />
+    }
 
     return (
         <div>

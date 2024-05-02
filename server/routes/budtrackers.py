@@ -18,7 +18,7 @@ class BudTrackers(Resource):
             bud_data = bud_trackers_schema.dump(user_buds)
             return bud_data, 200
         except Exception as e:
-            return {"error": str(e)}, 400
+            return {"message": str(e)}, 400
 
     def post(self):
         try:

@@ -148,7 +148,7 @@ const BudTrackerForm = () => {
                         {touched.my_effects && errors.my_effects && <div>{errors.my_effects}</div>}
 
                         <Field name="in_stock" type="checkbox" />
-                        <label htmlFor="in_stock">In Stock</label>
+                        <label htmlFor="in_stock">Currently have some</label>
                         <button type="submit" disabled={isSubmitting}>
                             {strainId ? "Submit" : "Update"}
                         </button>

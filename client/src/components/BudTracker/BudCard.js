@@ -2,7 +2,7 @@ import { Link, useLocation, useParams, useOutletContext } from "react-router-dom
 import ClipLoader from "react-spinners/ClipLoader"
 
 function BudCard({ bud, fetchBuds }) {
-    if (!bud && !fetchBuds) {
+    if (!bud) {
         return <ClipLoader
             size={150}
             aria-label="Loading Spinner"

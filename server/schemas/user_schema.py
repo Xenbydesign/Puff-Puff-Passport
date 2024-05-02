@@ -5,26 +5,12 @@ class UserSchema(ma.SQLAlchemySchema):
     class Meta:
         model = User
         load_instance = True
-        # load_only = ("_password_hash", "google_unique_id")
-        # dump_only = (
-        #     "id",
-        #     "created_at",
-        # )
-        fields = [
-            "id",
-            "username",
-            "email",
-            "birthday",
-            "password_hash",
-            "profile_pic",
-            "created_at",
-            "updated_at",
-            "bud_trackers",
-        ]
 
     bud_trackers = fields.Nested("BudTrackerSchema", many=True, exclude=("user",))
+    canna_gear = fields.Nested("CannaGearSchema", many=True)
 
     password_hash = fields.Str(required=True, load_only=True)
+
     username = fields.String(
         required=True,
         validate=validate.Length(
@@ -49,12 +35,7 @@ class UserSchema(ma.SQLAlchemySchema):
         ),
     )
 
-    url = ma.Hyperlinks(
-        {
-            "self": ma.URLFor("userbyid", values=dict(id="<id>")),
-            "collection": ma.URLFor("users"),
-        }
-    )
+    url = ma.Hyperlinks({"self": ma.URLFor("userbyid", values=dict(id="<id>"))})
 
     @validates("username")
     def validates_username(self, username):
@@ -71,6 +52,18 @@ class UserSchema(ma.SQLAlchemySchema):
         if user := User.query.filter(User.email == email).first():
             if not user.id:
                 raise ValidationError("That email is taken")
+
+    def load(self, data, instance=None, *, partial=False, **kwargs):
+        # Load the instance using Marshmallow's default behavior
+        loaded_instance = super().load(
+            data, instance=instance, partial=partial, **kwargs
+        )
+
+        # Set attributes manually, triggering property setters
+        for key, value in data.items():
+            setattr(loaded_instance, key, value)
+
+        return loaded_instance
 
 
 user_schema = UserSchema()

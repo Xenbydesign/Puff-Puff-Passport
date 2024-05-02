@@ -34,7 +34,7 @@ function BudDetail() {
             .then(resp => {
                 if (resp.status === 204) {
                     deleteBud(bud)
-                    navigate("/")
+                    navigate("/budtracker")
                 } else {
                     return resp.json().then(errorObj => toast.error(errorObj.message))
                 }

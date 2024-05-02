@@ -17,7 +17,7 @@ function Nav({ currentUser, updateCurrentUser }) {
         <>
             <nav className="navbar">
                 <NavLink to="/cannaeducation" className="active-link">
-                    Canna Health
+                    Cannabis 101
                 </NavLink>
                 {currentUser ? (
                     <>

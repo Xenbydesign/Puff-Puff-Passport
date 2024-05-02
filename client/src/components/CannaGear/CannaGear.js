@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { useOutletContext, useNavigate } from "react-router-dom";
 import CannaGearCard from './CannaGearCard'
 import toast from 'react-hot-toast';
@@ -30,6 +30,10 @@ const CannaGear = () => {
         fetchGear();
     }, []);
 
+    const handleNewGear = useCallback(() => {
+        navigate("/cannagear/new");
+    }, [navigate]);
+
     const allGear = cannaGear ? cannaGear.map(gear => <CannaGearCard key={gear.id} gear={gear} fetchGear={fetchGear} setCannaGear={setCannaGear} />
     ) : null;
 
@@ -44,7 +48,9 @@ const CannaGear = () => {
     return (
         <div className="tracked gear page">
             <h1>My Canna Gear</h1>
+            <button onClick={() => handleNewGear()} >Add New Gear</button>
             {allGear ? allGear : null}
+
         </div>
     );
 }

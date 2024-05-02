@@ -48,5 +48,4 @@ app.config["JWT_REFRESH_TOKEN_EXPIRES"] = timedelta(days=3)
 app.config["CLIENT_ID"] = os.environ.get("GOOGLE_CLIENT_ID")
 app.config["PROPAGATE_EXCEPTIONS"] = True
 
-
 # ````````````````````````````````````

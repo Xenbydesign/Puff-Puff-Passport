@@ -18,11 +18,12 @@ class CannaGears(Resource):
             gear_data = canna_gears_schema.dump(user_gear)
             return gear_data, 200
         except Exception as e:
-            return {"error": str(e)}, 400
+            return {"message": str(e)}, 400
 
     def post(self):
         try:
             data = request.get_json()
+            print(data)
             new_gear = canna_gear_schema.load(data)
             db.session.add(new_gear)
             db.session.commit()

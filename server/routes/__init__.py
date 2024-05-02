@@ -1,6 +1,7 @@
 # flask
 from flask import request, session, make_response, abort, g
 from flask_restful import Resource
+import requests
 
 
 # config imports
@@ -47,12 +48,20 @@ def not_found(error):
 
 @app.before_request
 def before_request():
-    path_dict = {"userbyid": User, "budtrackerbyid": BudTracker}
-    if request.endpoint in path_dict:
-        id = request.view_args.get("id")
-        record = db.session.get(path_dict.get(request.endpoint), id)
-        key_name = "user" if request.endpoint == "userbyid" else "bud"
-        setattr(g, key_name, record)
+    path_dict = {
+        "userbyid": ("user", User),
+        "budtrackerbyid": ("bud", BudTracker),
+        "cannagearbyid": ("gear", CannaGear),
+    }
+    endpoint_info = path_dict.get(request.endpoint)
+    if endpoint_info:
+        g_key, model = endpoint_info
+        record_id = request.view_args.get("id")
+        if record_id:
+            record = db.session.get(model, record_id)
+            setattr(g, g_key, record)
+            if record is None:
+                g.pop(g_key, None)
 
 
 @jwt.user_lookup_loader

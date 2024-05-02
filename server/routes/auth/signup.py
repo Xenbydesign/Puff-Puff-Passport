@@ -18,6 +18,9 @@ class SignUp(Resource):
             user = user_schema.load(data)
             db.session.add(user)
             db.session.commit()
+            import ipdb
+
+            ipdb.set_trace()
             access_token = create_access_token(identity=user.id, fresh=True)
             refresh_token = create_refresh_token(identity=user.id)
             response = make_response(user_schema.dump(user), 201)

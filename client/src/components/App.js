@@ -34,9 +34,7 @@ function App() {
   }, []);
 
 
-  const addBudToUser = (budtracker) => setCurrentUser(currentState => (
-    { ...currentState, budtrackers: [budtracker, ...currentState.budtrackers] }
-  ))
+
 
 
   return (
@@ -44,7 +42,7 @@ function App() {
       <GoogleOAuthProvider clientId="REACT_APP_GOOGLE_CLIENT_ID">
         <Nav currentUser={currentUser} updateCurrentUser={updateCurrentUser} />
         <div><Toaster /></div>
-        <Outlet context={{ currentUser, addBudToUser, updateCurrentUser, strains }} />
+        <Outlet context={{ currentUser, updateCurrentUser, strains }} />
       </GoogleOAuthProvider>
     </>
   )

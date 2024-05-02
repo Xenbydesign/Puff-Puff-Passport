@@ -10,6 +10,7 @@ import UserProfile from '../components/pages/UserProfile'
 import CannaEd from '../components/pages/CannaEd'
 import BudDetails from '../components/BudTracker/BudDetails'
 import BudTrackerForm from '../components/BudTracker/BudTrackerForm'
+import CannaGearForm from '../components/CannaGear/CannaGearForm'
 
 export const router = createBrowserRouter([
     {
@@ -37,6 +38,14 @@ export const router = createBrowserRouter([
             {
                 path: "cannagear/:gearId",
                 element: <CannaGear />
+            },
+            {
+                path: "cannagear/edit/:gearId",
+                element: <CannaGearForm />
+            },
+            {
+                path: "cannagear/new",
+                element: <CannaGearForm />
             },
             {
                 path: "budtracker",

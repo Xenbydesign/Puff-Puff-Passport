@@ -1,11 +1,9 @@
-import { Link, useNavigate, useParams, useOutletContext }
+import { useNavigate, useOutletContext }
     from "react-router-dom"
 import { useEffect } from 'react'
 import toast from 'react-hot-toast';
-import ClipLoader from "react-spinners/ClipLoader"
 
-function CannaGearCard({ setCannaGear, gear, fetchGear }) {
-    const { gearId } = useParams()
+function CannaGearCard({ gear, fetchGear, setCannaGear }) {
     const { currentUser } = useOutletContext()
     const navigate = useNavigate()
 
@@ -13,11 +11,10 @@ function CannaGearCard({ setCannaGear, gear, fetchGear }) {
         if (!currentUser) {
             navigate("/login");
         }
-    }, [currentUser]);
-
+    }, [currentUser, navigate]);
 
     const togglePublic = () => {
-        fetch(`/canna-gear/${gearId}`, {
+        fetch(`/canna-gears/${gear.id}`, {
             method: "PATCH",
             headers: {
                 'Content-Type': 'application/json'
@@ -32,14 +29,15 @@ function CannaGearCard({ setCannaGear, gear, fetchGear }) {
             })
             .catch(err => toast.error(err.message))
     }
-    const handleDelete = (bud) => {
-        fetch(`/canna-gear/${gearId}`, {
+
+    const handleDelete = () => {
+        fetch(`/canna-gears/${gear.id}`, {
             method: "DELETE"
         })
             .then(resp => {
-                if (resp.status === 204) {
-                    deleteGear(gear)
-                    navigate("#")
+                if (resp.ok) {
+                    toast.success('Gear deleted successfully');
+                    fetchGear();
                 } else {
                     return resp.json().then(errorObj => toast.error(errorObj.message))
                 }
@@ -47,38 +45,32 @@ function CannaGearCard({ setCannaGear, gear, fetchGear }) {
             .catch(err => toast.error(err.message))
     }
 
-    const deleteGear = (deleted_Gear) => (gears => gears.filter(() => gear.id !== deleted_Gear.id))
-
-    if (!gear && !fetchGear) {
-        return <ClipLoader
-            size={150}
-            aria-label="Loading Spinner"
-            data-testid="loader"
-        />
+    const handleEdit = () => {
+        navigate(`/cannagear/edit/${id}`)
     }
-    const { user_id, model, pic, brand, purchase_date, price, rating, notes, visible, gear_type } = gear;
+
+
+    const { id, user_id, model, pic, brand, purchase_date, price, rating, notes, visible, gear_type } = gear;
     return (
-        <div>
+        <div data-gear-id={id}>
             <h3 id="cardTitle">{model}</h3>
             <div id="card">
                 <img src={pic} alt={model} className="card-image" />
                 <p><strong>Brand:</strong> {brand}</p>
-                <Link to="#" onClick={(e) => e.preventDefault()}>
-                    <div id="cardText">
-                        <p><strong>Purchase Date:</strong>{purchase_date}</p>
-                        <p><strong>type:</strong>{gear_type}</p>
-                        <p><strong>price:</strong> {price}</p>
-                        <p><strong>rating:</strong> {rating}</p>
-                        <p><strong>notes:</strong> {notes}</p>
-                        {currentUser && currentUser.id === user_id &&
-                            <>
-                                <button onClick={togglePublic}>{visible ? "make public" : "hide from view"}</button>
-                                {/* <button onClick={() => handleEdit(gear)} >Edit</button> */}
-                                <button onClick={() => handleDelete(gear)} >Delete</button>
-                            </>
-                        }
-                    </div>
-                </Link>
+                <div id="cardText">
+                    <p><strong>Purchase Date:</strong> {purchase_date}</p>
+                    <p><strong>Type:</strong> {gear_type}</p>
+                    <p><strong>Price:</strong> {price}</p>
+                    <p><strong>Rating:</strong> {rating}</p>
+                    <p><strong>Notes:</strong> {notes}</p>
+                    {currentUser && currentUser.id === user_id && (
+                        <>
+                            <button onClick={togglePublic}>{!visible ? "Make Public" : "Hide from View"}</button>
+                            <button onClick={handleEdit}>Edit</button>
+                            <button onClick={handleDelete}>Delete</button>
+                        </>
+                    )}
+                </div>
             </div>
         </div>
     );
