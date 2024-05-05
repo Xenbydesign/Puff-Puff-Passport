@@ -20,9 +20,11 @@ class BudTrackers(Resource):
         except Exception as e:
             return {"message": str(e)}, 400
 
+    @jwt_required()
     def post(self):
         try:
             data = request.get_json()
+            data["user_id"] = current_user.id
             new_bud = bud_tracker_schema.load(data)
             db.session.add(new_bud)
             db.session.commit()

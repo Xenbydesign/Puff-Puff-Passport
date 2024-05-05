@@ -1,11 +1,10 @@
 from .. import (
     request,
-    session,
     Resource,
     make_response,
     db,
     User,
-    UserSchema,
+    user_schema,
     os,
     create_access_token,
     create_refresh_token,
@@ -13,82 +12,43 @@ from .. import (
     set_refresh_cookies,
 )
 
-from google.auth.transport import requests
+from google.auth.transport import requests as google_requests
 from google.oauth2 import id_token
 
 
-user_schema = UserSchema(session=db.session)
 CLIENT_ID = os.environ.get("GOOGLE_CLIENT_ID")
 
 
-class GAuth(Resource):
+class GoogleAuth(Resource):
     def post(self):
-        try:
-            # get data from google id_token
-            data = request.json
-            # data is sent back as a dictionary
-            token = data.get("id_token")
-            if not token:
-                return {"error": "Missing ID token"}, 400
-            # convert from string to bytes
-            id_token_bytes = token.encode("utf-8")
-            # verify and get information about the token
-            id_info = id_token.verify_oauth2_token(
-                id_token_bytes, requests.Request(), CLIENT_ID
-            )
+        token = request.json.get("id_token")
+        if not token:
+            return {"message": "Missing ID token"}, 400
 
-            # query the data to see if it exists in the database
+        try:
+            id_info = id_token.verify_oauth2_token(
+                token, google_requests.Request(), CLIENT_ID
+            )
             user = User.query.filter_by(email=id_info.get("email")).first()
-            # import ipdb; ipdb.set_trace()
-            #!LOGIN
-            if user:
-                try:
-                    #!jwt code
-                    jwt = create_access_token(identity=user.id)
-                    # import ipdb; ipdb.set_trace()
-                    #!create a refresh token
-                    refresh_token = create_refresh_token(identity=user.id)
-                    # import ipdb; ipdb.set_trace()
-                    # serialize the user
-                    serialized_user = user_schema.dump(user)
-                    # import ipdb; ipdb.set_trace()
-                    # prepackage the response
-                    response = make_response(serialized_user, 200)
-                    #!set cookies on both tokens
-                    set_access_cookies(response, jwt)
-                    set_refresh_cookies(response, refresh_token)
-                    return response
-                except Exception as e:
-                    return {"error": str(e)}, 401
-            #!REGISTER
-            else:
-                try:
-                    user_data = {
-                        "username": id_info.get("given_name"),
-                        "email": id_info.get("email"),
-                    }
-                    # Validate user information
-                    user_schema.validate(user_data)
-                    # Create new user schema
-                    new_user = user_schema.load(user_data)
-                    # Hash password
-                    new_user.password_hash = "passwordpass"
-                    db.session.add(new_user)
-                    db.session.commit()
-                    #!jwt code
-                    jwt = create_access_token(identity=new_user.id)
-                    #!set a refresh token
-                    refresh_token = create_refresh_token(identity=new_user.id)
-                    # serialize user
-                    serialized_user = user_schema.dump(new_user)
-                    # prepackage the response
-                    response = make_response(serialized_user, 201)
-                    # set both cookies
-                    set_access_cookies(response, jwt)
-                    set_refresh_cookies(response, refresh_token)
-                    return response
-                except Exception as e:
-                    db.session.rollback()
-                    return {"error": str(e)}, 400
+            if not user:
+                user_data = {
+                    "username": id_info.get("given_name"),
+                    "email": id_info.get("email"),
+                    "password_hash": "passwordtochange!2",
+                    "birthday": "1988-11-01",
+                }
+
+                user_schema.validate(user_data)
+                user = user_schema.load(user_data, session=db.session)
+                db.session.add(user)
+                db.session.commit()
+
+            jwt = create_access_token(identity=user.id)
+            refresh_token = create_refresh_token(identity=user.id)
+            response = make_response(user_schema.dump(user), 200 if user else 201)
+            set_access_cookies(response, jwt)
+            set_refresh_cookies(response, refresh_token)
+            return response
         except Exception as e:
-            return {"error": str(e)}, 400
+            db.session.rollback()
+            return {"message": str(e)}, 400

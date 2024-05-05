@@ -23,6 +23,7 @@ const CannaGearForm = () => {
     const { gearId } = useParams();
     const { currentUser } = useOutletContext();
     const navigate = useNavigate();
+
     const [initialValues, setInitialValues] = useState({
         user_id: currentUser?.id,
         gear_type: '',
@@ -60,9 +61,9 @@ const CannaGearForm = () => {
     }, [gearId, navigate]);
 
     const handleSubmit = (formData, { setSubmitting }) => {
-        const method = !gearId ? 'POST' : 'PATCH';
-        const url = !gearId ? `/canna-gears` : `/canna-gears/${gearId}`;
-        const { strain, id, ...dataToSend } = formData;
+        const method = gearId ? 'PATCH' : 'POST';
+        const url = gearId ? `/canna-gears/${gearId}` : `/canna-gears`;
+        const { id, ...dataToSend } = formData;
 
         fetch(url, {
             method,

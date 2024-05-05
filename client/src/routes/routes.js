@@ -6,7 +6,7 @@ import Registration from '../components/auth/Registration'
 import CannaGear from '../components/CannaGear/CannaGear'
 import BudTracker from '../components/BudTracker/BudTracker'
 import SmokeSession from '../components/pages/SmokeSession'
-import UserProfile from '../components/pages/UserProfile'
+import UserSettings from '../components/pages/UserSettings'
 import CannaEd from '../components/pages/CannaEd'
 import BudDetails from '../components/BudTracker/BudDetails'
 import BudTrackerForm from '../components/BudTracker/BudTrackerForm'
@@ -68,8 +68,8 @@ export const router = createBrowserRouter([
                 element: <SmokeSession />
             },
             {
-                path: "profile",
-                element: <UserProfile />
+                path: "user/settings",
+                element: <UserSettings />
             },
             {
                 path: "cannaeducation",

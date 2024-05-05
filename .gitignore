@@ -65,3 +65,4 @@ instance
 .vscode
 package-lock.json
 .env
+client/.env

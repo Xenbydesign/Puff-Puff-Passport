@@ -29,10 +29,10 @@ class UserSchema(ma.SQLAlchemySchema):
     )
     profile_pic = fields.String(
         required=False,
-        validate=validate.Regexp(
-            r".*\.(jpeg|png|jpg)",
-            error="File URI must be in JPEG, JPG, or PNG format",  # Regular expression to validate the photo.
-        ),
+        validate=lambda p: re.match(r".*\.(jpeg|jpg|png)$", p, re.IGNORECASE),
+        error_messages={
+            "validator_failed": "File URI must be in JPEG, JPG, or PNG format"
+        },
     )
 
     url = ma.Hyperlinks({"self": ma.URLFor("userbyid", values=dict(id="<id>"))})
@@ -52,6 +52,11 @@ class UserSchema(ma.SQLAlchemySchema):
         if user := User.query.filter(User.email == email).first():
             if not user.id:
                 raise ValidationError("That email is taken")
+
+    @validates("profile_pic")
+    def validate_profile_pic(self, value):
+        if not re.match(r".*\.(jpeg|jpg|png)$", value, re.IGNORECASE):
+            raise ValidationError("File URI must be in JPEG, JPG, or PNG format.")
 
     def load(self, data, instance=None, *, partial=False, **kwargs):
         # Load the instance using Marshmallow's default behavior

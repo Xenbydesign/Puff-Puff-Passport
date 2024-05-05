@@ -1,8 +1,8 @@
-"""strain added
+"""passset
 
-Revision ID: 0304b7d25160
+Revision ID: 4423d2a6afa1
 Revises: 
-Create Date: 2024-04-29 10:48:21.755221
+Create Date: 2024-05-05 00:26:56.388075
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '0304b7d25160'
+revision = '4423d2a6afa1'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -48,7 +48,6 @@ def upgrade():
     sa.Column('user_id', sa.Integer(), nullable=True),
     sa.Column('strain_id', sa.Integer(), nullable=True),
     sa.Column('grower', sa.String(), nullable=True),
-    sa.Column('type', sa.String(), nullable=True),
     sa.Column('dispensary', sa.String(), nullable=True),
     sa.Column('purchase_date', sa.String(), nullable=True),
     sa.Column('purchase_amount', sa.String(), nullable=True),

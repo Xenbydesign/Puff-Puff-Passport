@@ -25,6 +25,7 @@ from flask_jwt_extended import (
 
 # other
 from werkzeug.exceptions import NotFound
+from werkzeug.security import check_password_hash
 
 # models
 from models.user import User

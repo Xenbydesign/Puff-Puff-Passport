@@ -32,7 +32,7 @@ const BudTrackerForm = () => {
     const { currentUser } = useOutletContext();
     const navigate = useNavigate();
     const [initialValues, setInitialValues] = useState({
-        user_id: currentUser?.id,
+        user_id: currentUser.id,
         strain_id: strainId,
         grower: '',
         dispensary: '',
@@ -45,6 +45,7 @@ const BudTrackerForm = () => {
         my_effects: '',
         in_stock: false,
     });
+
 
     useEffect(() => {
         if (!currentUser) {

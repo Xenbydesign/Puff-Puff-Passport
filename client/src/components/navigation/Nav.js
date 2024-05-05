@@ -34,8 +34,8 @@ function Nav({ currentUser, updateCurrentUser }) {
                             Smoke Session
                         </NavLink>
 
-                        <NavLink to="/profile" className="active-link">
-                            Profile
+                        <NavLink to="/user/settings" className="active-link">
+                            Settings
                         </NavLink>
                         <NavLink to="#" className="active-link" onClick={handleDelete}>
                             Logout

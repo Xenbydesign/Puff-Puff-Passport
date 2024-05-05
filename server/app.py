@@ -18,17 +18,21 @@ api.add_resource(BudTrackerById, "/bud-trackers/<int:id>")
 api.add_resource(UserById, "/users/<int:id>")
 api.add_resource(Strains, "/strains")
 
+# auth
 from routes.auth.check_session import CheckSession
 
-# auth
 from routes.auth.login import Login
 from routes.auth.logout import Logout
 from routes.auth.signup import SignUp
+from routes.auth.verify_password import VerifyPassword
+from routes.auth.google_auth import GoogleAuth
 
+api.add_resource(GoogleAuth, "/google-auth")
+api.add_resource(VerifyPassword, "/verify-password/<int:id>")
 api.add_resource(SignUp, "/signup")
-api.add_resource(CheckSession, "/check-session")
-api.add_resource(Login, "/login")
 api.add_resource(Logout, "/logout")
+api.add_resource(Login, "/login")
+api.add_resource(CheckSession, "/check-session")
 
 
 @jwt.user_lookup_loader
