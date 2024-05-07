@@ -38,12 +38,12 @@ flask_bcrypt = Bcrypt(app)
 
 app.secret_key = os.environ.get("APP_SECRET")
 app.config["JWT_SECRET_KEY"] = os.environ.get("JWT_SECRET_KEY")
-app.config["JWT_TOKEN_LOCATION"] = ["headers", "cookies", "json", "query_string"]
+app.config["JWT_TOKEN_LOCATION"] = ["cookies"]
+app.config["JWT_CSRF_IN_COOKIES"] = True
 app.config["JWT_COOKIE_SECURE"] = False
-app.config["JWT_ALGORITHM"] = "HS256"
 
-app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(days=1)
-app.config["JWT_REFRESH_TOKEN_EXPIRES"] = timedelta(days=3)
+app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(minutes=2)
+app.config["JWT_REFRESH_TOKEN_EXPIRES"] = timedelta(hours=24)
 
 app.config["CLIENT_ID"] = os.environ.get("GOOGLE_CLIENT_ID")
 app.config["PROPAGATE_EXCEPTIONS"] = True

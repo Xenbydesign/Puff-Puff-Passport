@@ -29,10 +29,10 @@ const EditBudTrackerSchema = object({
 
 const BudTrackerForm = () => {
     const { strainId, budId } = useParams();
-    const { currentUser } = useOutletContext();
+    const { currentUser, headers } = useOutletContext();
     const navigate = useNavigate();
     const [initialValues, setInitialValues] = useState({
-        user_id: currentUser.id,
+        user_id: currentUser?.id,
         strain_id: strainId,
         grower: '',
         dispensary: '',
@@ -55,7 +55,7 @@ const BudTrackerForm = () => {
 
     useEffect(() => {
         if (budId) {
-            fetch(`/bud-trackers/${budId}`)
+            fetch(`/bud-trackers/${budId}`, { headers })
                 .then(resp => resp.json())
                 .then(data => {
                     setInitialValues(prevValues => ({
@@ -77,7 +77,7 @@ const BudTrackerForm = () => {
 
         fetch(url, {
             method,
-            headers: { 'Content-Type': 'application/json' },
+            headers,
             body: JSON.stringify(dataToSend)
         })
             .then(resp => {

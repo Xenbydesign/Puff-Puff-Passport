@@ -1,0 +1,163 @@
+//Typography
+@import 'gerillass';
+
+// Typography
+$font-stack: Helvetica, Arial, sans-serif;
+$font-size: 1em;
+$font-weight: 400;
+$font-bold: 700;
+$font-bolder: 900;
+$line-height: 1.5;
+
+// Colors 
+$text: #695F60;
+$accent: #D9A79B;
+$secondary: #E6C7BA;
+$tertiary: #FAF8EB;
+$dark-primary: #7F9189;
+$dark-secondary: #D3D7D9;
+
+* {
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  max-width: 1080px;
+  font-family: $font-stack;
+  font-size: $font-size;
+  font-weight: $font-weight;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: $text;
+  line-height: $line-height;
+  background-color: $tertiary;
+  display: block;
+}
+
+#logo {
+  float: none !important;
+  position: relative;
+  display: inline-block;
+  max-width: 100%;
+  height: 200px !important;
+  margin: 0 auto !important;
+  padding: 0px !important;
+  text-align: center;
+
+  &:before {
+    content: "";
+    vertical-align: middle;
+    display: inline-block;
+    height: 100%;
+  }
+
+  img {
+    max-width: 80%;
+    max-height: 100%;
+    height: auto;
+    display: inline-block;
+    vertical-align: middle;
+  }
+}
+
+nav>.nav-link {
+  margin-left: 25px;
+  font-weight: $font-bold;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: $text;
+}
+
+.cards-container .card .card-figure {
+  margin: 0;
+}
+
+.cards-container .card .card-figure .img {
+  height: 30%;
+  width: 30%;
+  border: none;
+}
+
+.card-container {
+  @include columnizer(5, 2rem, true);
+  height: 30%;
+  width: 30%;
+  display: flex;
+  flex-wrap: wrap;
+
+  .card {
+    display: flex;
+    flex-direction: column;
+
+    .card-figure {
+      overflow: hidden;
+      background-color: $dark-secondary;
+
+      @include border-radius(top, 0.5rem);
+      @include reset-figure;
+    }
+
+    .card-body {
+      flex: 1;
+      padding: 1rem;
+      border-width: 0 1px 1px 1px;
+      border-style: solid;
+      border-color: #E0E0E0;
+      @include border-radius(bottom, 0.5rem);
+    }
+
+    .card-title {
+      font-size: 1.25rem;
+      margin-bottom: 0.5rem;
+      font-weight: $font-bolder;
+      white-space: pre-line;
+    }
+
+    .card-text {
+      font-size: 1rem;
+      white-space: pre-line;
+      margin-bottom: 0.5rem;
+    }
+
+    .card-link {
+      margin-top: auto;
+    }
+  }
+}
+
+a {
+  color: $tertiary;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+a:hover {
+  color: $accent;
+}
+
+button {
+  margin-top: 12px;
+  border-radius: 3px;
+  padding: 0.5em .5em;
+  font-size: x-small;
+  font-weight: $font-bolder;
+  font-family: inherit;
+  background-color: $secondary;
+  cursor: pointer;
+  text-transform: uppercase;
+  border: 1px solid transparent;
+}
+
+button:hover {
+  color: $accent;
+  background-color: $dark-secondary;
+  border: 1px solid $accent;
+}
+
+button:focus,
+button:focus-visible {
+  outline: 4px auto -webkit-focus-ring-color;
+}

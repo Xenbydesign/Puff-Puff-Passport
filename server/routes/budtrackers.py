@@ -24,7 +24,6 @@ class BudTrackers(Resource):
     def post(self):
         try:
             data = request.get_json()
-            data["user_id"] = current_user.id
             new_bud = bud_tracker_schema.load(data)
             db.session.add(new_bud)
             db.session.commit()

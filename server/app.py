@@ -20,7 +20,7 @@ api.add_resource(Strains, "/strains")
 
 # auth
 from routes.auth.check_session import CheckSession
-
+from routes.auth.refresh import Refresh
 from routes.auth.login import Login
 from routes.auth.logout import Logout
 from routes.auth.signup import SignUp
@@ -32,7 +32,8 @@ api.add_resource(VerifyPassword, "/verify-password/<int:id>")
 api.add_resource(SignUp, "/signup")
 api.add_resource(Logout, "/logout")
 api.add_resource(Login, "/login")
-api.add_resource(CheckSession, "/check-session")
+api.add_resource(Refresh, "/refresh")
+api.add_resource(CheckSession, "/me")
 
 
 @jwt.user_lookup_loader

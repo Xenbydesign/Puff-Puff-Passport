@@ -2,7 +2,7 @@ from . import db
 
 
 class CannaGear(db.Model):
-    __tablename__ = "canna_gear"
+    __tablename__ = "canna_gears"
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
     gear_type = db.Column(db.String)

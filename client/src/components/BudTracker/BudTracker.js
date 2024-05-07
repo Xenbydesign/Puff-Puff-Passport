@@ -6,7 +6,7 @@ import toast from 'react-hot-toast';
 import ClipLoader from "react-spinners/ClipLoader"
 
 const BudTracker = () => {
-    const { currentUser } = useOutletContext();
+    const { currentUser, headers } = useOutletContext();
     const [buds, setBuds] = useState(null)
     const navigate = useNavigate()
 
@@ -17,7 +17,7 @@ const BudTracker = () => {
     }, [currentUser]);
 
     const fetchBuds = () => {
-        fetch("/bud-trackers")
+        fetch("/bud-trackers", { headers })
             .then(resp => {
                 if (resp.ok) {
                     return resp.json().then(setBuds)

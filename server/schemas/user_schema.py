@@ -7,9 +7,11 @@ class UserSchema(ma.SQLAlchemySchema):
         load_instance = True
 
     bud_trackers = fields.Nested("BudTrackerSchema", many=True, exclude=("user",))
-    canna_gear = fields.Nested("CannaGearSchema", many=True)
+    canna_gears = fields.Nested("CannaGearSchema", many=True)
 
     password_hash = fields.Str(required=True, load_only=True)
+
+    id = fields.Int(dump_only=True)
 
     username = fields.String(
         required=True,
@@ -27,15 +29,16 @@ class UserSchema(ma.SQLAlchemySchema):
             error="Must be 21 or older",
         ),
     )
+
+    @validates("profile_pic")
+    def validate_profile_pic(value):
+        if value is not None and not re.match(r".*\.(jpeg|png|jpg)", value):
+            raise ValidationError("File URI must be in JPEG, JPG, or PNG format")
+
     profile_pic = fields.String(
         required=False,
-        validate=lambda p: re.match(r".*\.(jpeg|jpg|png)$", p, re.IGNORECASE),
-        error_messages={
-            "validator_failed": "File URI must be in JPEG, JPG, or PNG format"
-        },
+        validate=validate_profile_pic,
     )
-
-    url = ma.Hyperlinks({"self": ma.URLFor("userbyid", values=dict(id="<id>"))})
 
     @validates("username")
     def validates_username(self, username):
@@ -52,11 +55,6 @@ class UserSchema(ma.SQLAlchemySchema):
         if user := User.query.filter(User.email == email).first():
             if not user.id:
                 raise ValidationError("That email is taken")
-
-    @validates("profile_pic")
-    def validate_profile_pic(self, value):
-        if not re.match(r".*\.(jpeg|jpg|png)$", value, re.IGNORECASE):
-            raise ValidationError("File URI must be in JPEG, JPG, or PNG format.")
 
     def load(self, data, instance=None, *, partial=False, **kwargs):
         # Load the instance using Marshmallow's default behavior

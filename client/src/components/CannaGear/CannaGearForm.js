@@ -20,8 +20,8 @@ const CannaGearSchema = object({
 
 
 const CannaGearForm = () => {
-    const { gearId } = useParams();
-    const { currentUser } = useOutletContext();
+    const { gearId, } = useParams();
+    const { currentUser, headers } = useOutletContext();
     const navigate = useNavigate();
 
     const [initialValues, setInitialValues] = useState({
@@ -45,7 +45,7 @@ const CannaGearForm = () => {
 
     useEffect(() => {
         if (gearId) {
-            fetch(`/canna-gears/${gearId}`)
+            fetch(`/canna-gears/${gearId}`, { headers })
                 .then(resp => resp.json())
                 .then(data => {
                     setInitialValues(prevValues => ({
@@ -67,7 +67,7 @@ const CannaGearForm = () => {
 
         fetch(url, {
             method,
-            headers: { 'Content-Type': 'application/json' },
+            headers,
             body: JSON.stringify(dataToSend)
         })
             .then(resp => {

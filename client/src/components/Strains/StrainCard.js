@@ -25,20 +25,20 @@ function StrainCard({ strain }) {
     }
 
     return (
-        <div>
-            <h3 id="cardTitle">{strain.name}</h3>
-            <div id="card">
-                <img src={strain.pic} alt={strain.name} className="card-image" />
-                <p><strong>Type:</strong> {strain.type}</p>
-                <Link to="#" onClick={(e) => e.preventDefault()}>
-                    <div id="cardText">
-                        <p><strong>Potency:</strong>{strain.potency}</p>
-                        <p><strong>Effects:</strong> {strain.effects}</p>
-                        <p><strong>Flavor:</strong> {strain.flavor}</p>
-                        <p><strong>Description:</strong> {strain.description}</p>
-                        <button onClick={handleTrackStrain}>Add to Tracker</button>
-                    </div>
-                </Link>
+        <div className="card-container">
+            <div className="card">
+                <figure className="card-figure">
+                    <img className="img" src={strain.pic} alt={strain.name} />
+                </figure>
+                <div className="card-body">
+                    <h3 className="card-title">{strain.name}</h3>
+                    <p className="card-text"><strong>Type:</strong> {strain.type}</p>
+                    <p className="card-text"><strong>Potency:</strong>{strain.potency}</p>
+                    <p className="card-text"><strong>Effects:</strong> {strain.effects}</p>
+                    <p className="card-text"><strong>Flavor:</strong> {strain.flavor}</p>
+                    <p className="card-text"><strong>Description:</strong> {strain.description}</p>
+                    <button onClick={handleTrackStrain}>Add to Tracker</button>
+                </div>
             </div>
         </div>
     );

@@ -4,15 +4,18 @@ from . import (
     g,
     request,
     db,
+    jwt_required,
 )
 
 
 class UserById(Resource):
+    @jwt_required()
     def get(self, id):
         if g.user:
             return user_schema.dump(g.user), 200
         return {"message": "User not found."}, 404
 
+    @jwt_required()
     def patch(self, id):
         if g.user:
             try:
@@ -25,6 +28,7 @@ class UserById(Resource):
                 return {"message": str(e)}, 422
         return {"message": "User not found."}, 404
 
+    @jwt_required()
     def delete(self, id):
         if g.user:
             try:

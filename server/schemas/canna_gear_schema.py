@@ -7,7 +7,7 @@ class CannaGearSchema(ma.SQLAlchemySchema):
         load_instance = True
 
     user = fields.Nested(
-        "UserSchema", many=False, only=("id", "username"), exclude=("canna_gear",)
+        "UserSchema", many=False, only=("id", "username"), exclude=("canna_gears",)
     )
 
     id = fields.Int(dump_only=True)

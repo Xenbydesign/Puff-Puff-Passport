@@ -7,7 +7,7 @@ class BudTrackerSchema(ma.SQLAlchemySchema):
         load_instance = True
 
     user = fields.Nested(
-        "UserSchema", many=False, only=("id", "username"), exclude=("bud_trackers",)
+        "UserSchema", only=("id", "username"), exclude=("bud_trackers",)
     )
     strain = fields.Nested(
         "StrainSchema",

@@ -1,27 +1,56 @@
 import React, { useEffect, useState } from "react";
-import { Outlet, useNavigate } from 'react-router-dom'
+import { Outlet, useNavigate, Link } from 'react-router-dom'
 import Nav from "./navigation/Nav";
 import toast, { Toaster } from 'react-hot-toast'
-
+import Logo from "../styles/logo.png"
 function App() {
   const updateCurrentUser = (user) => setCurrentUser(user)
   const [currentUser, setCurrentUser] = useState(null)
   const [strains, setStrains] = useState(null)
+  const navigate = useNavigate()
+
+  const getCookie = (name) => {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) return parts.pop().split(';').shift();
+  }
+
 
   useEffect(() => {
-    fetch("/check-session")
+    fetch("/me", {
+      headers: {
+        'X-CSRF-TOKEN': getCookie('csrf_access_token'),
+      },
+    })
       .then(resp => {
         if (resp.ok) {
-          return resp.json();
+          resp.json().then(updateCurrentUser)
+
         } else {
-          throw new Error('Server response was not ok.');
+          fetch("/refresh", {
+            method: "POST",
+            headers: {
+              'X-CSRF-TOKEN': getCookie('csrf_refresh_token'),
+            }
+          })
+            .then(resp => {
+              if (resp.ok) {
+                resp.json().then(updateCurrentUser)
+              } else {
+                navigate("/login")
+                toast.error("Please log in")
+              }
+
+            })
         }
       })
-      .then(setCurrentUser)
-      .catch(error => {
-        console.error('Fetch error:', error);
-      });
-  }, []);
+  }, [navigate]);
+
+  const headers = {
+    'Content-Type': 'application/json',
+    'X-CSRF-TOKEN': getCookie('csrf_access_token'),
+    'X-CSRF-RE-TOKEN': getCookie('csrf_refresh_token'),
+  };
 
 
   useEffect(() => {
@@ -38,12 +67,14 @@ function App() {
 
 
 
-
   return (
     <>
-      <Nav currentUser={currentUser} updateCurrentUser={updateCurrentUser} />
+      <header>
+        <Link to='/'><img src={Logo} alt='canna keeper logo' id='logo' /></Link>
+        <Nav currentUser={currentUser} updateCurrentUser={updateCurrentUser} />
+      </header>
       <div><Toaster /></div>
-      <Outlet context={{ currentUser, updateCurrentUser, strains }} />
+      <Outlet context={{ currentUser, updateCurrentUser, strains, headers }} />
     </>
   )
 }

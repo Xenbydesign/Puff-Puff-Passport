@@ -1,17 +1,20 @@
-from . import request, g, Resource, db, canna_gear_schema
+from . import request, g, Resource, db, canna_gear_schema, jwt_required
 
 
-#  still need to add jwt
 class CannaGearById(Resource):
+    @jwt_required()
     def get(self, id):
         if g.gear:
             return canna_gear_schema.dump(g.gear), 200
         return {"message": f"Could not find your gear with id #{id}"}, 404
 
+    @jwt_required()
     def patch(self, id):
         if g.gear:
             try:
                 data = request.json
+                if "user" in data:
+                    del data["user"]
                 updated_gear = canna_gear_schema.load(
                     data, instance=g.gear, partial=True
                 )
@@ -22,6 +25,7 @@ class CannaGearById(Resource):
                 return {"message": str(e)}, 422
         return {"message": f"Could not find your gear with id #{id}"}, 404
 
+    @jwt_required()
     def delete(self, id):
         if g.gear:
             db.session.delete(g.gear)
