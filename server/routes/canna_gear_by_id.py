@@ -1,4 +1,4 @@
-from . import request, g, Resource, db, canna_gear_schema, jwt_required
+from . import request, g, Resource, db, canna_gear_schema, jwt_required, current_user
 
 
 class CannaGearById(Resource):
@@ -10,7 +10,7 @@ class CannaGearById(Resource):
 
     @jwt_required()
     def patch(self, id):
-        if g.gear:
+        if g.gear and g.gear.user_id == current_user.id:
             try:
                 data = request.json
                 if "user" in data:
@@ -27,7 +27,7 @@ class CannaGearById(Resource):
 
     @jwt_required()
     def delete(self, id):
-        if g.gear:
+        if g.gear and g.gear.user_id == current_user.id:
             db.session.delete(g.gear)
             db.session.commit()
             return "", 204

@@ -1,4 +1,4 @@
-from . import request, g, Resource, db, bud_tracker_schema, jwt_required
+from . import request, g, Resource, db, bud_tracker_schema, jwt_required, current_user
 
 
 #  still need to add jwt
@@ -11,7 +11,7 @@ class BudTrackerById(Resource):
 
     @jwt_required()
     def patch(self, id):
-        if g.bud:
+        if g.bud and g.bud.user_id == current_user.id:
             try:
                 data = request.get_json()
                 if "user" in data:
@@ -28,7 +28,7 @@ class BudTrackerById(Resource):
 
     @jwt_required()
     def delete(self, id):
-        if g.bud:
+        if g.bud and g.bud.user_id == current_user.id:
             db.session.delete(g.bud)
             db.session.commit()
             return "", 204

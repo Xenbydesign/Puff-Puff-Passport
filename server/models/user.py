@@ -18,10 +18,15 @@ class User(db.Model):
     bud = db.relationship(
         "BudTracker",
         back_populates="user",
+        cascade="all, delete",
     )
-    cannagear = db.relationship("CannaGear", back_populates="user")
+    cannagear = db.relationship(
+        "CannaGear", back_populates="user", cascade="all, delete"
+    )
 
-    smoke_sessions = db.relationship("SmokeSession", back_populates="user")
+    smoke_sessions = db.relationship(
+        "SmokeSession", back_populates="user", cascade="all, delete"
+    )
 
     @hybrid_property
     def password_hash(self):

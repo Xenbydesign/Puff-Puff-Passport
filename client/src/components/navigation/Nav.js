@@ -1,17 +1,9 @@
 import { NavLink } from "react-router-dom";
 import toast from "react-hot-toast";
 
-function Nav({ currentUser, updateCurrentUser }) {
+function Nav({ currentUser }) {
 
-    const handleDelete = () => {
-        fetch("/logout", { method: "DELETE" })
-            .then(resp => {
-                if (resp.status === 204) {
-                    updateCurrentUser(null)
-                }
-            })
-            .catch(err => console.log(err))
-    }
+
 
     return (
         <>
@@ -33,18 +25,14 @@ function Nav({ currentUser, updateCurrentUser }) {
                         <NavLink to="/smokesession" className="nav-link">
                             Smoke Session
                         </NavLink>
-
-                        <NavLink to="/user/settings" className="nav-link">
-                            Settings
-                        </NavLink>
-                        <NavLink to="#" className="nav-link" onClick={handleDelete}>
+                        {/* <NavLink to="#" className="nav-link" onClick={handleDelete}>
                             Logout
-                        </NavLink>
+                        </NavLink> */}
                     </>
                 ) : (
                     <>
                         <NavLink to="/registration" className="nav-link">
-                            Registration
+                            Login
                         </NavLink>
                     </>
                 )}

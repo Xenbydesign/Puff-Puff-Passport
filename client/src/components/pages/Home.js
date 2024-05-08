@@ -17,20 +17,22 @@ function Home() {
         }
     }, [currentUser]);
 
+    const handlesearchstrains = () => { }
+
+
 
     return (
-        <div>
-            <>
-                {strains ? (
-                    strains.map(strain => (
-                        <div key={strain.id} className="card">
-                            <StrainCard strain={strain} />
-                        </div>
-                    ))
-                ) : (
-                    <div>Loading...</div>
-                )}
-            </>
+        <div className="card-wrapper">
+            {strains ? (
+                strains.map(strain => (
+
+                    <StrainCard key={strain.id} strain={strain} />
+
+                ))
+            ) : (
+                <div>Loading...</div>
+            )}
+
             <div>
                 <Dispensaries setDispensaries={setDispensaries} />
                 <div className="card-container">

@@ -33,8 +33,8 @@ const UserSettings = () => {
 
     const formik = useFormik({
         initialValues: {
-            username: currentUser.username,
-            email: currentUser.email,
+            username: currentUser?.username,
+            email: currentUser?.email,
             profile_pic: '',
             password_hash: '',
         },
@@ -49,7 +49,7 @@ const UserSettings = () => {
                 data.profile_pic = values.profile_pic;
             }
 
-            fetch(`/users/${currentUser.id}`, {
+            fetch(`/users/${currentUser?.id}`, {
                 method: 'PATCH',
                 headers,
                 body: JSON.stringify(data)
@@ -57,7 +57,11 @@ const UserSettings = () => {
                 .then(resp => {
                     setSubmitting(false);
                     if (resp.ok) {
-                        resp.json().then(() => navigate("/user/settings"));
+                        resp.json().then((updatedUser) => {
+                            updateCurrentUser(updatedUser)
+                            setEdit(false);
+                            navigate("/user/settings")
+                        });
                     } else {
                         resp.json().then(errorObj => toast.error(errorObj.message));
                     }
@@ -68,6 +72,25 @@ const UserSettings = () => {
                 });
         },
     });
+
+    const handleDeleteAccount = () => {
+        fetch(`/users/${currentUser?.id}`, {
+            method: 'DELETE',
+            headers,
+        })
+            .then(resp => {
+                if (resp.status === 204) {
+                    navigate("/login");
+                    updateCurrentUser(null);
+                    toast.success("Account deleted successfully");
+                } else {
+                    resp.json().then(errorObj => toast.error(errorObj.message));
+                }
+            })
+            .catch(error => {
+                toast.error(error.message);
+            });
+    }
 
     return (
         <div>
@@ -128,6 +151,9 @@ const UserSettings = () => {
                     <input type="submit" value="Update" />
                 </form>
             )}
+            <h2>Delete Account</h2>
+            <button onClick={() => { handleDeleteAccount(currentUser) }}>Delete Account</button>
+            <p>This action cannot be undone.</p>
         </div>
     );
 };

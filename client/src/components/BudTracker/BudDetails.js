@@ -5,7 +5,7 @@ import ClipLoader from "react-spinners/ClipLoader"
 
 function BudDetail() {
     const [bud, setBud] = useState(null)
-    const { currentUser } = useOutletContext()
+    const { currentUser, headers, getCookie } = useOutletContext()
     const { budId } = useParams()
     const navigate = useNavigate()
 
@@ -16,12 +16,34 @@ function BudDetail() {
     }, [currentUser]);
 
     useEffect(() => {
-        fetch(`/bud-trackers/${budId}`)
+        fetch(`/bud-trackers/${budId}`, headers)
             .then(resp => {
                 if (resp.status === 200) {
                     return resp.json().then(setBud)
                 }
-                return resp.json().then(errorObj => toast.error(errorObj.message))
+                fetch("/refresh", {
+                    method: "POST",
+                    headers: {
+                        'X-CSRF-TOKEN': getCookie('csrf_refresh_token'),
+                    }
+                })
+                    .then(resp => {
+                        if (resp.ok) {
+                            fetch(`/bud-trackers/${budId}`, headers)
+                                .then(resp => {
+                                    if (resp.status === 200) {
+                                        return resp.json().then(setBud)
+
+                                    } else {
+                                        return resp.json().then(errorObj => toast.error(errorObj.message))
+                                    }
+                                })
+                        }
+                        else {
+                            navigate("/login")
+                            toast.error("Please log in")
+                        }
+                    })
             })
             .catch(err => toast.error(err.message))
     }, [])

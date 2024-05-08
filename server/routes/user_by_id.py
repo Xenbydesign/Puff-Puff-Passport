@@ -5,6 +5,9 @@ from . import (
     request,
     db,
     jwt_required,
+    unset_access_cookies,
+    unset_refresh_cookies,
+    make_response,
 )
 
 
@@ -32,9 +35,13 @@ class UserById(Resource):
     def delete(self, id):
         if g.user:
             try:
+
                 db.session.delete(g.user)
                 db.session.commit()
-                return "", 204
+                response = make_response({}, 204)
+                unset_access_cookies(response)
+                unset_refresh_cookies(response)
+                return response
             except Exception as e:
                 db.session.rollback()
                 return {"message": str(e)}, 400

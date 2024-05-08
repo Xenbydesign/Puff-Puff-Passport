@@ -64,17 +64,43 @@ function App() {
       .catch(err => console.log(err))
   }, []);
 
-
+  const handleLogout = () => {
+    fetch("/logout", { method: "DELETE" })
+      .then(resp => {
+        if (resp.status === 204) {
+          updateCurrentUser(null)
+        }
+      })
+      .catch(err => console.log(err))
+  }
 
 
   return (
     <>
       <header>
+        {currentUser ? <div className="header-wrapper">
+
+          <div className="welcome"><h1>Welcome, {currentUser.username || 'User'}!</h1>
+          </div>
+
+
+          <div className="user-links">
+            <Link to="#" className="app-link" onClick={handleLogout}>
+              Logout
+            </Link>
+            <Link to="/user/settings" className="app-link">
+              ⚙️
+            </Link>
+          </div>
+
+        </div> : null}
+
         <Link to='/'><img src={Logo} alt='canna keeper logo' id='logo' /></Link>
+
         <Nav currentUser={currentUser} updateCurrentUser={updateCurrentUser} />
       </header>
       <div><Toaster /></div>
-      <Outlet context={{ currentUser, updateCurrentUser, strains, headers }} />
+      <Outlet context={{ currentUser, updateCurrentUser, strains, headers, getCookie }} />
     </>
   )
 }
