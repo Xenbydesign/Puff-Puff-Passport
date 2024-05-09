@@ -3,6 +3,7 @@ import { useFormik } from 'formik';
 import { useNavigate, useOutletContext } from 'react-router-dom';
 import { object, string } from 'yup';
 import toast from "react-hot-toast";
+import { fetchWithCSRF } from '../fetchWithCSRF';
 
 const profileSchema = object({
     username: string()
@@ -21,7 +22,7 @@ const profileSchema = object({
 });
 
 const UserSettings = () => {
-    const { currentUser, updateCurrentUser, headers } = useOutletContext();
+    const { currentUser, updateCurrentUser } = useOutletContext();
     const [edit, setEdit] = useState(false);
     const navigate = useNavigate();
 
@@ -49,18 +50,22 @@ const UserSettings = () => {
                 data.profile_pic = values.profile_pic;
             }
 
-            fetch(`/users/${currentUser?.id}`, {
+
+            fetchWithCSRF(`/users/${currentUser?.id}`, {
                 method: 'PATCH',
-                headers,
+                headers: {
+                    'Content-Type': 'application/json'
+                },
                 body: JSON.stringify(data)
             })
                 .then(resp => {
                     setSubmitting(false);
                     if (resp.ok) {
                         resp.json().then((updatedUser) => {
-                            updateCurrentUser(updatedUser)
+                            toast.success("Profile updated successfully");
+                            updateCurrentUser(updatedUser);
                             setEdit(false);
-                            navigate("/user/settings")
+                            navigate("/user/settings");
                         });
                     } else {
                         resp.json().then(errorObj => toast.error(errorObj.message));
@@ -74,14 +79,13 @@ const UserSettings = () => {
     });
 
     const handleDeleteAccount = () => {
-        fetch(`/users/${currentUser?.id}`, {
+        fetchWithCSRF(`/users/${currentUser?.id}`, {
             method: 'DELETE',
-            headers,
         })
             .then(resp => {
                 if (resp.status === 204) {
-                    navigate("/login");
                     updateCurrentUser(null);
+                    navigate("/login");
                     toast.success("Account deleted successfully");
                 } else {
                     resp.json().then(errorObj => toast.error(errorObj.message));
@@ -90,7 +94,7 @@ const UserSettings = () => {
             .catch(error => {
                 toast.error(error.message);
             });
-    }
+    };
 
     return (
         <div>

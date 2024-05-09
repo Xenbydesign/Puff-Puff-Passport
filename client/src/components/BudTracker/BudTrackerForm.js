@@ -4,6 +4,8 @@ import { Formik, Form, Field } from 'formik';
 import { object, string, date, boolean, number } from 'yup';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-hot-toast';
+import { fetchWithCSRF } from '../fetchWithCSRF';
+
 
 const NewBudTrackerSchema = object({
     grower: string(),
@@ -29,7 +31,7 @@ const EditBudTrackerSchema = object({
 
 const BudTrackerForm = () => {
     const { strainId, budId } = useParams();
-    const { currentUser, headers } = useOutletContext();
+    const { currentUser } = useOutletContext();
     const navigate = useNavigate();
     const [initialValues, setInitialValues] = useState({
         user_id: currentUser?.id,
@@ -55,7 +57,11 @@ const BudTrackerForm = () => {
 
     useEffect(() => {
         if (budId) {
-            fetch(`/bud-trackers/${budId}`, { headers })
+            fetchWithCSRF(`/bud-trackers/${budId}`, {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
                 .then(resp => resp.json())
                 .then(data => {
                     setInitialValues(prevValues => ({
@@ -75,19 +81,21 @@ const BudTrackerForm = () => {
         const url = strainId ? `/bud-trackers` : `/bud-trackers/${budId}`;
         const { strain, id, ...dataToSend } = formData;
 
-        fetch(url, {
+        fetchWithCSRF(url, {
             method,
-            headers,
+            headers: {
+                'Content-Type': 'application/json'
+            },
             body: JSON.stringify(dataToSend)
         })
             .then(resp => {
                 setSubmitting(false);
                 if (resp.ok) {
-                    resp.json().then(() => {
+                    return resp.json().then(() => {
                         navigate("/budtracker");
                     });
                 } else {
-                    resp.json().then(errorObj => {
+                    return resp.json().then(errorObj => {
                         toast.error(errorObj.message);
                     });
                 }
@@ -97,6 +105,8 @@ const BudTrackerForm = () => {
                 toast.error("Network error: " + error.message);
             });
     };
+
+
     return (
         <div>
             <h1>{strainId ? "Add New Bud Tracker Entry" : "Edit Bud Tracker Entry"}</h1>

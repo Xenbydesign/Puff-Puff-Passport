@@ -4,9 +4,10 @@ import { useOutletContext, useNavigate } from "react-router-dom";
 import BudCard from './BudCard'
 import toast from 'react-hot-toast';
 import ClipLoader from "react-spinners/ClipLoader"
+import { fetchWithCSRF } from '../fetchWithCSRF';
 
-const BudTracker = () => {
-    const { currentUser, headers } = useOutletContext();
+const BudTracker = ({ onlyInStock }) => {
+    const { currentUser } = useOutletContext();
     const [buds, setBuds] = useState(null)
     const navigate = useNavigate()
 
@@ -16,23 +17,29 @@ const BudTracker = () => {
         }
     }, [currentUser]);
 
+
     const fetchBuds = () => {
-        fetch("/bud-trackers", { headers })
+        fetchWithCSRF("/bud-trackers", {
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
             .then(resp => {
                 if (resp.ok) {
-                    return resp.json().then(setBuds)
+                    return resp.json().then(setBuds);
                 }
-                return resp.json().then(errorObj => toast.error(errorObj.message))
+                return resp.json().then(errorObj => toast.error(errorObj.message));
             })
-            .catch(err => toast.error(err.message))
+            .catch(err => toast.error(err.message));
     }
 
     useEffect(() => {
         fetchBuds();
     }, []);
 
-    const allTrackedBud = buds ? buds.map(bud => <BudCard key={bud.id} bud={bud} fetchBuds={fetchBuds} />
-    ) : null;
+    const displayedBuds = buds && onlyInStock ? buds.filter(bud => bud.inStock) : buds;
+
+    const allTrackedBud = displayedBuds ? displayedBuds.map(bud => <BudCard key={bud.id} bud={bud} fetchBuds={fetchBuds} />) : null;
 
     if (!buds) {
         return <ClipLoader
@@ -43,9 +50,13 @@ const BudTracker = () => {
     }
 
     return (
-        <div className="tracked bud page">
-            <h1>Bud Tracker</h1>
-            {allTrackedBud ? allTrackedBud : null}
+        <div>
+            <div className='bud-container'>
+                <h1>Bud Tracker</h1>
+            </div>
+            <div className="card-wrapper">
+                {allTrackedBud ? allTrackedBud : null}
+            </div>
         </div>
     );
 }

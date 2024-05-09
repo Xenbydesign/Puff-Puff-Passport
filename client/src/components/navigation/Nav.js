@@ -22,11 +22,8 @@ function Nav({ currentUser }) {
                         <NavLink to="/budtracker" className="nav-link">
                             Bud Tracker
                         </NavLink>
-                        <NavLink to="/smokesession" className="nav-link">
+                        {/* <NavLink to="/smokesession" className="nav-link">
                             Smoke Session
-                        </NavLink>
-                        {/* <NavLink to="#" className="nav-link" onClick={handleDelete}>
-                            Logout
                         </NavLink> */}
                     </>
                 ) : (

@@ -3,55 +3,27 @@ import { Outlet, useNavigate, Link } from 'react-router-dom'
 import Nav from "./navigation/Nav";
 import toast, { Toaster } from 'react-hot-toast'
 import Logo from "../styles/logo.png"
+import { fetchWithCSRF } from "./fetchWithCSRF";
+import Footer from "../styles/footer";
 function App() {
   const updateCurrentUser = (user) => setCurrentUser(user)
   const [currentUser, setCurrentUser] = useState(null)
   const [strains, setStrains] = useState(null)
   const navigate = useNavigate()
 
-  const getCookie = (name) => {
-    const value = `; ${document.cookie}`;
-    const parts = value.split(`; ${name}=`);
-    if (parts.length === 2) return parts.pop().split(';').shift();
-  }
-
 
   useEffect(() => {
-    fetch("/me", {
-      headers: {
-        'X-CSRF-TOKEN': getCookie('csrf_access_token'),
-      },
-    })
-      .then(resp => {
-        if (resp.ok) {
-          resp.json().then(updateCurrentUser)
-
-        } else {
-          fetch("/refresh", {
-            method: "POST",
-            headers: {
-              'X-CSRF-TOKEN': getCookie('csrf_refresh_token'),
-            }
-          })
-            .then(resp => {
-              if (resp.ok) {
-                resp.json().then(updateCurrentUser)
-              } else {
-                navigate("/login")
-                toast.error("Please log in")
-              }
-
-            })
-        }
+    // Example usage for fetching user data
+    fetchWithCSRF('/me')
+      .then(response => response.json())
+      .then(data => {
+        setCurrentUser(data);
       })
-  }, [navigate]);
-
-  const headers = {
-    'Content-Type': 'application/json',
-    'X-CSRF-TOKEN': getCookie('csrf_access_token'),
-    'X-CSRF-RE-TOKEN': getCookie('csrf_refresh_token'),
-  };
-
+      .catch(error => {
+        console.error('Failed to fetch user:', error);
+        navigate('/login');
+      });
+  }, []);
 
   useEffect(() => {
     fetch("/strains")
@@ -100,7 +72,9 @@ function App() {
         <Nav currentUser={currentUser} updateCurrentUser={updateCurrentUser} />
       </header>
       <div><Toaster /></div>
-      <Outlet context={{ currentUser, updateCurrentUser, strains, headers, getCookie }} />
+      <Outlet context={{ currentUser, updateCurrentUser, strains }} />
+      <hr id='footer' />
+      <Footer />
     </>
   )
 }

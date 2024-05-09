@@ -4,6 +4,7 @@ import { Formik, Form, Field } from 'formik';
 import { object, string, date, boolean, number } from 'yup';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-hot-toast';
+import { fetchWithCSRF } from '../fetchWithCSRF';
 
 const CannaGearSchema = object({
     gear_type: string().required('Required'),
@@ -21,7 +22,7 @@ const CannaGearSchema = object({
 
 const CannaGearForm = () => {
     const { gearId, } = useParams();
-    const { currentUser, headers } = useOutletContext();
+    const { currentUser } = useOutletContext();
     const navigate = useNavigate();
 
     const [initialValues, setInitialValues] = useState({
@@ -45,7 +46,11 @@ const CannaGearForm = () => {
 
     useEffect(() => {
         if (gearId) {
-            fetch(`/canna-gears/${gearId}`, { headers })
+            fetchWithCSRF(`/canna-gears/${gearId}`, {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
                 .then(resp => resp.json())
                 .then(data => {
                     setInitialValues(prevValues => ({
@@ -65,9 +70,11 @@ const CannaGearForm = () => {
         const url = gearId ? `/canna-gears/${gearId}` : `/canna-gears`;
         const { id, ...dataToSend } = formData;
 
-        fetch(url, {
+        fetchWithCSRF(url, {
             method,
-            headers,
+            headers: {
+                'Content-Type': 'application/json'
+            },
             body: JSON.stringify(dataToSend)
         })
             .then(resp => {

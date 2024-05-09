@@ -12,18 +12,22 @@ function BudCard({ bud, fetchBuds }) {
 
     const { strain } = bud || fetchBuds
     return (
-        <div id={bud.id}>
-            <h3 id="cardTitle">{strain.name}</h3>
-            <div className="Card">
-                {bud.pic ? (
-                    <img src={bud.pic} alt={strain.name} className="card-image" />
-                ) : (
-                    <img src={strain.pic} alt={strain.name} />
-                )}
-                <p>{strain.name}</p>
-                <Link to={`/budtracker/${bud.id}`}>see more</Link>
+        <div className="card-container">
+            <div className="card" id={bud.id}>
+                <figure className="card-figure">
+                    {bud.pic ? (
+                        <img className="img" src={bud.pic} alt={strain.name} />
+                    ) : (
+                        <img className="img" src={strain.pic} alt={strain.name} />
+                    )}
+                </figure>
+                <div className="card-body">
+                    <h3 id="cardTitle">{strain.name}</h3>
+                    <p className="card-text">{strain.name}</p>
+                    <Link to={`/budtracker/${bud.id}`}>see more</Link>
+                </div>
             </div>
-        </div>
+        </div >
     );
 }
 

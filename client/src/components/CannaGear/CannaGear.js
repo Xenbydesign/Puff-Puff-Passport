@@ -3,6 +3,7 @@ import { useOutletContext, useNavigate } from "react-router-dom";
 import CannaGearCard from './CannaGearCard'
 import toast from 'react-hot-toast';
 import ClipLoader from "react-spinners/ClipLoader"
+import { fetchWithCSRF } from '../fetchWithCSRF';
 
 const CannaGear = () => {
     const { currentUser } = useOutletContext();
@@ -16,7 +17,7 @@ const CannaGear = () => {
     }, [currentUser]);
 
     const fetchGear = () => {
-        fetch("/canna-gears")
+        fetchWithCSRF("/canna-gears")
             .then(resp => {
                 if (resp.ok) {
                     return resp.json().then(setCannaGear)
@@ -46,11 +47,14 @@ const CannaGear = () => {
     }
 
     return (
-        <div className="tracked gear page">
-            <h1>My Canna Gear</h1>
-            <button onClick={() => handleNewGear()} >Add New Gear</button>
-            {allGear ? allGear : null}
-
+        <div className="gear-container">
+            <div>
+                <h1>My Canna Gear</h1>
+                <button onClick={() => handleNewGear()} >Add New Gear</button>
+            </div>
+            <div className="card-wrapper">
+                {allGear ? allGear : null}
+            </div>
         </div>
     );
 }

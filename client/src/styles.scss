@@ -36,6 +36,10 @@ $dark-secondary: #D3D7D9;
   background-color: $tertiary;
 }
 
+
+
+
+
 // #logo {
 //   float: none !important;
 //   position: relative;
@@ -98,28 +102,30 @@ nav>.nav-link {
 
 }
 
+.gear-container {
+  margin-bottom: auto;
+}
+
+
 .card-wrapper {
-  display: flex;
-  flex-wrap: wrap;
-  overflow: scroll;
+  @include columnizer(3, 2rem, true);
+  margin-top: 3em;
 
   .card-container {
-    display: flex;
-    width: 33%;
+
+    height: 50%;
+    width: 50%;
 
     .card {
-      display: flex;
+      // display: flex;
       flex-direction: column;
 
       .card-figure {
+        overflow: hidden;
+        background-color: $dark-secondary;
 
-
-        .img {
-          aspect-ratio: 16/9;
-          object-fit: cover;
-          width: 100%;
-          border: none;
-        }
+        @include border-radius(top, 0.5rem);
+        @include reset-figure;
       }
 
       .card-body {
@@ -150,18 +156,25 @@ nav>.nav-link {
   }
 }
 
+.yelp-burst {
+  // padding: .5px;
+  width: 15px;
+  height: 15px
+}
+
 a {
-  color: $tertiary;
+  border-radius: 2em;
+  color: $accent;
   text-decoration: none;
   cursor: pointer;
 }
 
 a:hover {
-  color: $accent;
+  color: $dark-primary;
 }
 
 button {
-  margin-top: 12px;
+  margin: 5px;
   border-radius: 3px;
   padding: 0.5em .5em;
   font-size: x-small;
@@ -182,4 +195,28 @@ button:hover {
 button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
+}
+
+
+// Footer
+footer {
+  margin-bottom: 3em;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  flex-direction: column;
+}
+
+#footer {
+  margin-top: 3em;
+  height: 1px;
+  background: $secondary;
+  border: none;
+}
+
+footer>p {
+  margin-top: 1em;
+  width: 85%;
+  font-size: .90em;
+  text-align: center;
 }
