@@ -3,8 +3,10 @@ import { Outlet, useNavigate, Link } from 'react-router-dom'
 import Nav from "./navigation/Nav";
 import toast, { Toaster } from 'react-hot-toast'
 import Logo from "../styles/logo.png"
-import { fetchWithCSRF } from "./fetchWithCSRF";
+import { fetchWithCSRF } from "./helpers/fetchWithCSRF";
 import Footer from "../styles/footer";
+import Header from "../styles/header";
+
 function App() {
   const updateCurrentUser = (user) => setCurrentUser(user)
   const [currentUser, setCurrentUser] = useState(null)
@@ -26,7 +28,7 @@ function App() {
   }, []);
 
   useEffect(() => {
-    fetch("/strains")
+    fetchWithCSRF("/strains")
       .then(resp => {
         if (resp.ok) {
           return resp.json().then(setStrains)
@@ -49,30 +51,9 @@ function App() {
 
   return (
     <>
-      <header>
-        {currentUser ? <div className="header-wrapper">
-
-          <div className="welcome"><h1>Welcome, {currentUser.username || 'User'}!</h1>
-          </div>
-
-
-          <div className="user-links">
-            <Link to="#" className="app-link" onClick={handleLogout}>
-              Logout
-            </Link>
-            <Link to="/user/settings" className="app-link">
-              ⚙️
-            </Link>
-          </div>
-
-        </div> : null}
-
-        <Link to='/'><img src={Logo} alt='canna keeper logo' id='logo' /></Link>
-
-        <Nav currentUser={currentUser} updateCurrentUser={updateCurrentUser} />
-      </header>
-      <div><Toaster /></div>
-      <Outlet context={{ currentUser, updateCurrentUser, strains }} />
+      <Header currentUser={currentUser} handleLogout={handleLogout} />
+      <Toaster />
+      <Outlet context={{ currentUser, updateCurrentUser: setCurrentUser, strains }} />
       <hr id='footer' />
       <Footer />
     </>

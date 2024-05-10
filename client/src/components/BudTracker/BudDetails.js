@@ -2,7 +2,7 @@ import { useParams, useNavigate, useOutletContext } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import toast from 'react-hot-toast'
 import ClipLoader from "react-spinners/ClipLoader"
-import { fetchWithCSRF } from '../fetchWithCSRF'
+import { fetchWithCSRF } from '../helpers/fetchWithCSRF'
 
 function BudDetail() {
     const [bud, setBud] = useState(null)
@@ -100,33 +100,58 @@ function BudDetail() {
     }
     const { strain, id, user_id, grower, type, dispensary, pic, in_stock, cost, rating, flavor, my_effects, purchase_date, purchase_amount } = bud;
     return (
-        <div id={id}>
+        <div className="bud-details">
+            <h1>{strain.name}</h1>
             {bud.pic ? (
                 <img src={pic} alt={strain.name} />
             ) : (
                 <img src={strain.pic} alt={strain.name} />
             )}
-            <p>{strain.name}</p>
-            <p>{strain.type}</p>
-            <p>{grower}</p>
-            <p>{type}</p>
-            <p>{dispensary}</p>
-            <p>{cost}</p>
-            <p>{rating}</p>
-            <p>{flavor}</p>
-            <p>{my_effects}</p>
+            <dl>
+                <dt>Type</dt>
+                <dd>{strain.type}</dd>
 
-            {currentUser && currentUser.id === user_id &&
-                <>
-                    <button onClick={toggleStock}>
-                        {in_stock ? "Im out" : "got some"}
-                    </button>
-                    <p>{purchase_date}</p>
-                    <p>{purchase_amount}</p>
-                    <button onClick={() => handleEdit(bud)} >Edit</button>
-                    <button onClick={() => handleDelete(bud.id)} >Delete</button>
-                </>
-            }
+                <dt>Grower</dt>
+                <dd>{grower}</dd>
+
+                <dt>Category</dt>
+                <dd>{type}</dd>
+
+                <dt>Dispensary</dt>
+                <dd>{dispensary}</dd>
+
+                <dt>Cost</dt>
+                <dd>{cost}</dd>
+
+                <dt>Rating</dt>
+                <dd>{rating}</dd>
+
+                <dt>Flavor</dt>
+                <dd>{flavor}</dd>
+
+                <dt>Effects</dt>
+                <dd>{my_effects}</dd>
+            </dl>
+
+            {currentUser && currentUser.id === user_id && (
+                <dl>
+                    <dt>Purchase Date</dt>
+                    <dd>{purchase_date}</dd>
+
+                    <dt>Purchase Amount</dt>
+                    <dd>{purchase_amount}</dd>
+
+                    <div>
+                        <dt>In Stock?</dt>
+                        <button onClick={toggleStock}>
+                            {in_stock ? "Im out" : "got some"}
+                        </button>
+                        <dt>Edit and Add rating</dt>
+                        <button onClick={() => handleEdit(bud)} >Edit</button>
+                        <button onClick={() => handleDelete(bud.id)} >Delete</button>
+                    </div>
+                </dl>
+            )}
         </div>
     )
 }

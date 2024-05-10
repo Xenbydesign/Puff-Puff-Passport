@@ -39,11 +39,12 @@ function Home() {
 
 
     return (
-        <div>
-            <div className="parent">
-                <input
+        <div className="home-container">
+            <div>
+                <h1>Strains</h1>
+                <input className="search"
                     type="text"
-                    placeholder="Search strains..."
+                    placeholder="Search strains to add to BudTracker..."
                     value={searchQuery}
                     onChange={handleSearchChange}
                 />
@@ -62,7 +63,7 @@ function Home() {
             <div className="div2">
                 <Dispensaries setDispensaries={setDispensaries} />
                 <div className="card-wrapper">
-                    {dispensaries.map(dispensary => (
+                    {Array.isArray(dispensaries) && dispensaries.map(dispensary => (
                         <DispensaryCard key={dispensary.id} dispensary={dispensary} />
                     ))}
                 </div>

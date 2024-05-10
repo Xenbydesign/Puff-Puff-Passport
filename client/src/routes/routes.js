@@ -1,7 +1,7 @@
 import { createBrowserRouter } from 'react-router-dom'
 import App from '../components/App'
 import Home from '../components/pages/Home'
-import Error from '../components/errors/Error'
+import Error from '../components/helpers/Error'
 import Registration from '../components/auth/Registration'
 import CannaGear from '../components/CannaGear/CannaGear'
 import BudTracker from '../components/BudTracker/BudTracker'

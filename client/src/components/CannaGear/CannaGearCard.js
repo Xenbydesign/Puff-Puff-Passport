@@ -2,7 +2,7 @@ import { useNavigate, useOutletContext }
     from "react-router-dom"
 import { useEffect } from 'react'
 import toast from 'react-hot-toast';
-import { fetchWithCSRF } from '../fetchWithCSRF';
+import { fetchWithCSRF } from '../helpers/fetchWithCSRF';
 
 function CannaGearCard({ gear, fetchGear, setCannaGear }) {
     const { currentUser } = useOutletContext()

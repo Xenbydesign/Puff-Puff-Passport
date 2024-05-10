@@ -2,7 +2,7 @@ from . import db, requests, os, request, Resource
 
 YELP_API = os.environ.get("YELP_API_KEY")
 BUSINESS_PATH = "https://api.yelp.com/v3/businesses/search?"
-HEADERS = {"Authorization": "bearer %s" % YELP_API}
+HEADERS = {"Authorization": f"Bearer {YELP_API}"}
 
 
 class YelpData(Resource):

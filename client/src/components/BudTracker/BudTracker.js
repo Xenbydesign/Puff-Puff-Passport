@@ -4,7 +4,7 @@ import { useOutletContext, useNavigate } from "react-router-dom";
 import BudCard from './BudCard'
 import toast from 'react-hot-toast';
 import ClipLoader from "react-spinners/ClipLoader"
-import { fetchWithCSRF } from '../fetchWithCSRF';
+import { fetchWithCSRF } from '../helpers/fetchWithCSRF';
 
 const BudTracker = ({ onlyInStock }) => {
     const { currentUser } = useOutletContext();
@@ -50,8 +50,9 @@ const BudTracker = ({ onlyInStock }) => {
     }
 
     return (
-        <div>
-            <div className='bud-container'>
+
+        <div className='bud-container'>
+            <div>
                 <h1>Bud Tracker</h1>
             </div>
             <div className="card-wrapper">
