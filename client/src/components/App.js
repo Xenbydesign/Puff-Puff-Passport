@@ -28,7 +28,7 @@ function App() {
   }, []);
 
   useEffect(() => {
-    fetch("/strains")
+    fetchWithCSRF("/strains")
       .then(resp => {
         if (resp.ok) {
           return resp.json().then(setStrains)

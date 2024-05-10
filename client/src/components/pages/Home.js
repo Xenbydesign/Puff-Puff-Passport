@@ -40,10 +40,11 @@ function Home() {
 
     return (
         <div className="home-container">
-            <div className="parent">
-                <input
+            <div>
+                <h1>Strains</h1>
+                <input className="search"
                     type="text"
-                    placeholder="Search strains..."
+                    placeholder="Search strains to add to BudTracker..."
                     value={searchQuery}
                     onChange={handleSearchChange}
                 />
