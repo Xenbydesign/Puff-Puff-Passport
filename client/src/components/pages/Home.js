@@ -39,7 +39,7 @@ function Home() {
 
 
     return (
-        <div>
+        <div className="home-container">
             <div className="parent">
                 <input
                     type="text"
@@ -60,7 +60,9 @@ function Home() {
                 </div>
             </div>
             <div className="div2">
-                <Dispensaries setDispensaries={setDispensaries} />
+                {dispensaries && dispensaries.map(dispensary => (
+                    <DispensaryCard key={dispensary.id} dispensary={dispensary} />
+                ))}
                 <div className="card-wrapper">
                     {dispensaries.map(dispensary => (
                         <DispensaryCard key={dispensary.id} dispensary={dispensary} />

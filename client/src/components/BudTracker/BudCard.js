@@ -1,13 +1,18 @@
-import { Link, useLocation, useParams, useOutletContext } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 import ClipLoader from "react-spinners/ClipLoader"
 
 function BudCard({ bud, fetchBuds }) {
+    const navigate = useNavigate()
     if (!bud) {
         return <ClipLoader
             size={150}
             aria-label="Loading Spinner"
             data-testid="loader"
         />
+    }
+
+    const handleInfoPage = () => {
+        navigate(`/budtracker/${bud.id}`)
     }
 
     const { strain } = bud || fetchBuds
@@ -24,7 +29,7 @@ function BudCard({ bud, fetchBuds }) {
                 <div className="card-body">
                     <h3 id="cardTitle">{strain.name}</h3>
                     <p className="card-text">{strain.name}</p>
-                    <Link to={`/budtracker/${bud.id}`}>see more</Link>
+                    <button onClick={handleInfoPage}>see more</button>
                 </div>
             </div>
         </div >

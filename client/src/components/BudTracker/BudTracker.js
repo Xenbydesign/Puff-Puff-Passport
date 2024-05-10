@@ -50,8 +50,9 @@ const BudTracker = ({ onlyInStock }) => {
     }
 
     return (
-        <div>
-            <div className='bud-container'>
+
+        <div className='bud-container'>
+            <div>
                 <h1>Bud Tracker</h1>
             </div>
             <div className="card-wrapper">

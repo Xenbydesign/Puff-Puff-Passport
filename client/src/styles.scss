@@ -1,7 +1,7 @@
-//Typography
+// Import the necessary fonts or other styles
 @import 'gerillass';
 
-// Typography
+// Base Typography
 $font-stack: Helvetica, Arial, sans-serif;
 $font-size: 1em;
 $font-weight: 400;
@@ -9,103 +9,202 @@ $font-bold: 700;
 $font-bolder: 900;
 $line-height: 1.5;
 
-// Colors 
-$text: #695F60;
-$accent: #D9A79B;
-$secondary: #E6C7BA;
-$tertiary: #FAF8EB;
-$dark-primary: #7F9189;
-$dark-secondary: #D3D7D9;
+// Define default CSS custom properties
+:root {
+  --text-color: #695F60;
+  --accent-color: #D9A79B;
+  --secondary-color: #E6C7BA;
+  --tertiary-color: #FAF8EB;
+  --background-color: #FAF8EB; // added for consistency
+  --font-family: #{$font-stack};
+  --font-size: #{$font-size};
+  --font-weight: #{$font-weight};
+  --line-height: #{$line-height};
+}
 
+// Dark theme overrides
+[data-theme="dark"] {
+  --text-color: #9ba7a1;
+  --accent-color: #80917d;
+  --secondary-color: #6D7978;
+  --tertiary-color: #2C3531;
+  --background-color: #2C3531;
+
+}
+
+
+// Base element styles
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-:root {
-  font-family: $font-stack;
-  font-size: $font-size;
-  font-weight: $font-weight;
+body {
+  font-family: var(--font-family);
+  font-size: var(--font-size);
+  font-weight: var(--font-weight);
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  color: $text;
-  line-height: $line-height;
-  background-color: $tertiary;
+  color: var(--text-color);
+  line-height: var(--line-height);
+  background-color: var(--background-color);
 }
 
 
 
 
 
-// #logo {
-//   float: none !important;
-//   position: relative;
-//   display: inline-block;
-//   max-width: 100%;
-//   height: 200px !important;
-//   margin: 0 auto !important;
-//   padding: 0px !important;
-//   text-align: center;
 
-//   &:before {
-//     content: "";
-//     vertical-align: middle;
-//     display: inline-block;
-//     height: 100%;
-//   }
+// Specific styles for navigation links
 
 
-// img {
-//   max-width: 80%;
-//   max-height: 100%;
-//   height: auto;
-//   display: inline-block;
-//   vertical-align: middle;
-// }
-// }
-
-
-header {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-
-}
-
-.header-wrapper {
-  width: 100%;
-  padding: 20px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background-color: $dark-primary;
-  color: $tertiary;
-}
 
 nav>.nav-link {
   margin-left: 25px;
   font-weight: $font-bold;
   text-transform: uppercase;
   text-decoration: none;
-  color: $text;
+  color: var(--text-color);
+
+  &:hover {
+    color: var(--accent-color);
+  }
 }
 
-.app-link {
+// Styling links
+
+
+a {
   margin-left: 25px;
+  border-radius: 2em;
   font-weight: $font-bold;
   text-transform: uppercase;
+  color: var(--tertiary-color);
   text-decoration: none;
-  color: $text;
+  cursor: pointer;
+
+  &:hover {
+    color: var(--text-color);
+  }
+}
+
+
+// Button hover effects
+.yelp-burst {
+  padding: .5px;
+  width: 15px;
+  height: 15px
+}
+
+
+// button:hover {
+//   background-color: var(--secondary-color);
+//   border-color: var(--accent-color);
+// }
+
+
+button {
+  margin: 5px;
+  border-radius: 3px;
+  padding: 0.5em .5em;
+  font-size: x-small;
+  font-weight: $font-bolder;
+  font-family: inherit;
+  background-color: var(--secondary-color);
+  cursor: pointer;
+  text-transform: uppercase;
+  border: 1px solid transparent;
+
+  &:hover {
+    background-color: var(--accent-color);
+    border: 1px solid var(--background-color);
+  }
+}
+
+
+// Header styles
+header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  .header-wrapper {
+    width: 100%;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--accent-color);
+    color: var(--tertiary-color);
+
+    #logo {
+      float: none !important;
+      position: relative;
+      display: inline-block;
+      max-width: 100%;
+      height: 200px !important;
+      margin: 0 auto !important;
+      padding: 0px !important;
+      text-align: center;
+
+      &:before {
+        content: "";
+        vertical-align: middle;
+        display: inline-block;
+        height: 100%;
+      }
+
+
+      img {
+        max-width: 80%;
+        max-height: 100%;
+        height: auto;
+        display: inline-block;
+        vertical-align: middle;
+      }
+    }
+  }
+}
+
+// Footer
+footer {
+  margin-bottom: 3em;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  flex-direction: column;
+}
+
+#footer {
+  margin-top: 3em;
+  height: 1px;
+  background: var(--secondary-color);
+  border: none;
+}
+
+footer>p {
+  margin-top: 1em;
+  width: 85%;
+  font-size: .90em;
+  text-align: center;
+}
+
+
+
+.gear-container,
+.bud-container,
+.home-container {
+  margin: 4em 4em;
+  max-width: 90%;
+  padding: 0 20px;
+  box-sizing: border-box;
 
 }
 
-.gear-container {
-  margin-bottom: auto;
-}
-
+// card styles
 
 .card-wrapper {
   @include columnizer(3, 2rem, true);
@@ -116,13 +215,15 @@ nav>.nav-link {
     height: 50%;
     width: 50%;
 
+
     .card {
       // display: flex;
       flex-direction: column;
 
+
       .card-figure {
         overflow: hidden;
-        background-color: $dark-secondary;
+        background-color: var(--secondary-color);
 
         @include border-radius(top, 0.5rem);
         @include reset-figure;
@@ -133,7 +234,8 @@ nav>.nav-link {
         padding: 1rem;
         border-width: 0 1px 1px 1px;
         border-style: solid;
-        border-color: #E0E0E0;
+        background-color: #E0E0E0;
+        border-color: var(--accent-color);
       }
 
       .card-title {
@@ -154,69 +256,4 @@ nav>.nav-link {
       }
     }
   }
-}
-
-.yelp-burst {
-  // padding: .5px;
-  width: 15px;
-  height: 15px
-}
-
-a {
-  border-radius: 2em;
-  color: $accent;
-  text-decoration: none;
-  cursor: pointer;
-}
-
-a:hover {
-  color: $dark-primary;
-}
-
-button {
-  margin: 5px;
-  border-radius: 3px;
-  padding: 0.5em .5em;
-  font-size: x-small;
-  font-weight: $font-bolder;
-  font-family: inherit;
-  background-color: $secondary;
-  cursor: pointer;
-  text-transform: uppercase;
-  border: 1px solid transparent;
-}
-
-button:hover {
-  color: $accent;
-  background-color: $dark-secondary;
-  border: 1px solid $accent;
-}
-
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
-}
-
-
-// Footer
-footer {
-  margin-bottom: 3em;
-  align-items: center;
-  justify-content: center;
-  display: flex;
-  flex-direction: column;
-}
-
-#footer {
-  margin-top: 3em;
-  height: 1px;
-  background: $secondary;
-  border: none;
-}
-
-footer>p {
-  margin-top: 1em;
-  width: 85%;
-  font-size: .90em;
-  text-align: center;
 }
