@@ -3,7 +3,7 @@ import { Outlet, useNavigate, Link } from 'react-router-dom'
 import Nav from "./navigation/Nav";
 import toast, { Toaster } from 'react-hot-toast'
 import Logo from "../styles/logo.png"
-import { fetchWithCSRF } from "./fetchWithCSRF";
+import { fetchWithCSRF } from "./helpers/fetchWithCSRF";
 import Footer from "../styles/footer";
 import Header from "../styles/header";
 

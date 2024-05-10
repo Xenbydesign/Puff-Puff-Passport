@@ -8,9 +8,6 @@ function Nav({ currentUser }) {
     return (
         <>
             <nav>
-                <NavLink to="/cannaeducation" className="nav-link">
-                    Cannabis 101
-                </NavLink>
                 {currentUser ? (
                     <>
                         <NavLink to="/" className="nav-link">

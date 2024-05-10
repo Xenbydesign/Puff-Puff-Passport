@@ -3,7 +3,7 @@ import { useFormik } from 'formik';
 import { useNavigate, useOutletContext } from 'react-router-dom';
 import { object, string } from 'yup';
 import toast from "react-hot-toast";
-import { fetchWithCSRF } from '../fetchWithCSRF';
+import { fetchWithCSRF } from '../helpers/fetchWithCSRF';
 
 const profileSchema = object({
     username: string()

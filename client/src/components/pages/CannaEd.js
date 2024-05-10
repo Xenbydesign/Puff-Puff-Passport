@@ -1,4 +1,7 @@
+
+
 const CannaEd = () => {
+
     return (
         <div className="canna-ed">
             <div>

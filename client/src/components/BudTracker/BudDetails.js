@@ -2,7 +2,7 @@ import { useParams, useNavigate, useOutletContext } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import toast from 'react-hot-toast'
 import ClipLoader from "react-spinners/ClipLoader"
-import { fetchWithCSRF } from '../fetchWithCSRF'
+import { fetchWithCSRF } from '../helpers/fetchWithCSRF'
 
 function BudDetail() {
     const [bud, setBud] = useState(null)

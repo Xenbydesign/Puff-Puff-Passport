@@ -4,7 +4,7 @@ import { Formik, Form, Field } from 'formik';
 import { object, string, date, boolean, number } from 'yup';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-hot-toast';
-import { fetchWithCSRF } from '../fetchWithCSRF';
+import { fetchWithCSRF } from '../helpers/fetchWithCSRF';
 
 const CannaGearSchema = object({
     gear_type: string().required('Required'),

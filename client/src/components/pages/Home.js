@@ -61,11 +61,9 @@ function Home() {
                 </div>
             </div>
             <div className="div2">
-                {dispensaries && dispensaries.map(dispensary => (
-                    <DispensaryCard key={dispensary.id} dispensary={dispensary} />
-                ))}
+                <Dispensaries setDispensaries={setDispensaries} />
                 <div className="card-wrapper">
-                    {dispensaries.map(dispensary => (
+                    {Array.isArray(dispensaries) && dispensaries.map(dispensary => (
                         <DispensaryCard key={dispensary.id} dispensary={dispensary} />
                     ))}
                 </div>
